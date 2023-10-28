@@ -17,7 +17,7 @@ See [below](#projects-using-this-api) for projects using this API.
 See the [full changelog](/CHANGELOG.md) for release details.
 
 ## Install
-If you just want to use fca-unofficial, you should use this command:
+If you just want to use metacord, you should use this command:
 ```bash
 npm install metacord
 ```
