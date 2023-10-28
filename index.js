@@ -542,34 +542,26 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                 }
             }
 
-            if (getKeyValue("MetaCordKey")) {
-                try {
-                    appState = JSON.stringify(appState);
-                    if (appState.includes('[')) {
-                        if (global.config.Encrypt_Appstate) {
-                            logger('Start Encrypt Appstate !', '[ MetaCord ]');
+            if (global.config.Encrypt_Appstate) {
+                if (getKeyValue("MetaCordKey")) {
+                    try {
+                        appState = JSON.stringify(appState);
+                        if (appState.includes('[')) {
+                            logger('Not ready for decryption', '[ MetaCord ]')
+                        } else {
                             try {
                                 appState = JSON.parse(appState);
-                                appState = StateCrypt.encryptState(appState, getKeyValue("MetaCordKey"));
-                                logger('Encrypt Appstate Success !', '[ MetaCord ]');
+                                appState = StateCrypt.decryptState(appState, getKeyValue("MetaCordKey"));
+                                logger('Decrypt Appstate Success !', '[ MetaCord ]');
                             }
                             catch (e) {
                                 logger('Replace AppState !', '[ MetaCord ]');
                             }
                         }
-                    } else {
-                        try {
-                            appState = JSON.parse(appState);
-                            appState = StateCrypt.decryptState(appState, getKeyValue("MetaCordKey"));
-                            logger('Decrypt Appstate Success !', '[ MetaCord ]');
-                        }
-                        catch (e) {
-                            logger('Replace AppState !', '[ MetaCord ]');
-                        }
                     }
-                }
-                catch (e) {
-                    console.log(e);
+                    catch (e) {
+                        console.log(e);
+                    }
                 }
             }
             try {

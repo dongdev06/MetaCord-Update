@@ -1196,11 +1196,12 @@ function decodeClientPayload(payload) {
 
 function getAppState(jar) {
     var appstate = jar.getCookies("https://www.facebook.com").concat(jar.getCookies("https://facebook.com")).concat(jar.getCookies("https://www.messenger.com"));
+    if (!require(process.cwd() + "/MetaCord.json").Encrypt_Appstate) return appstate;
     var StateCrypt = require('./utils/StateCrypt');
     var logger = require('./logger');
-    logger('Encrypt AppState Success \n AB Koi B Apki Id nhi Hack Kr Saka Ga \n (y) <: L3G3ND ALI KOJA INXIDE:> (y) !','[ LEGEND KOJA]');
-    if (process.env['FBKEY']) {
-        return StateCrypt.encryptState(JSON.stringify(appstate),process.env['FBKEY']);
+    logger('Start Encrypt Appstate !', '[ MetaCord ]');
+    if (getKeyValue("MetaCordKey")) {
+        return StateCrypt.encryptState(JSON.stringify(appstate),getKeyValue("MetaCordKey")), logger('Encrypt Appstate Success !', '[ MetaCord ]');
     }
    else return appstate;
 }
