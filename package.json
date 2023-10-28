@@ -1,6 +1,6 @@
 {
   "name": "metacord",
-  "version": "1.0.4-Beta",
+  "version": "1.0.5-Beta",
   "description": "Facebook Chat API",
   "author": "Avery, David, Maude, Benjamin, ShinTHL09, KanzuWakazaki",
   "dependencies": {
@@ -20,7 +20,8 @@
     "request": "latest",
     "semver": "latest",
     "express": "latest",
-    "better-sqlite3": "latest"
+    "better-sqlite3": "latest",
+    "websocket-stream": "latest"
   },
   "engines": {
     "node": ">=14.x"
