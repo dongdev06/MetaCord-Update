@@ -1,0 +1,40 @@
+{
+  "name": "metacord",
+  "version": "1.0.0-Beta",
+  "description": "Facebook Chat API",
+  "author": "Avery, David, Maude, Benjamin, ShinTHL09, KanzuWakazaki",
+  "dependencies": {
+    "aes-js": "latest",
+    "axios": "latest",
+    "bluebird": "^2.11.0",
+    "chalk": "4.1.2",
+    "chalkercli": "^1.6.4",
+    "cheerio": "latest",
+    "crypto": "latest",
+    "dotenv": "^16.0.1",
+    "figlet": "^1.5.2",
+    "https-proxy-agent": "latest",
+    "mqtt": "latest",
+    "npmlog": "latest",
+    "os": "^0.1.2",
+    "request": "latest",
+    "semver": "latest",
+    "express": "latest",
+    "better-sqlite3": "latest"
+  },
+  "engines": {
+    "node": ">=14.x"
+  },
+  "keywords": [
+    "facebook",
+    "chat",
+    "api",
+    "metacord"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint **.js",
+    "prettier": "prettier utils.js src/* --write",
+    "test": "mocha"
+  }
+}
