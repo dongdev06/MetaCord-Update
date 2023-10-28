@@ -200,4 +200,8 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, ap
 <a name="projects-using-this-api"></a>
 ## Projects using this API:
 
+<<<<<<< HEAD
 - [c3c](https://github.com/lequanglam/c3c) - A bot that can be customizable using plugins. Support Facebook & Discord.
+=======
+- [c3c](https://github.com/lequanglam/c3c) - A bot that can be customizable using plugins. Support Facebook & Discord.
+>>>>>>> 506fda2afb170d3f390503581d703afea980769a
