@@ -1,6 +1,6 @@
 {
   "name": "metacord",
-  "version": "1.0.0-Beta",
+  "version": "1.0.1-Beta",
   "description": "Facebook Chat API",
   "author": "Avery, David, Maude, Benjamin, ShinTHL09, KanzuWakazaki",
   "dependencies": {

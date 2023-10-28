@@ -653,9 +653,9 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
             var { readFileSync } = require('fs-extra');
             const { execSync } = require('child_process');
             axios.get('https://pastebin.com/raw/B6YJ7Zjx').then(async (res) => {
-                const localbrand = JSON.parse(readFileSync('./node_modules/MetaCord/package.json')).version;
+                const localbrand = JSON.parse(readFileSync('./node_modules/metacord/package.json')).version;
                 if (localbrand != res.data.version) {
-                    log.warn("[ MetaCord ] •", `New Version Published: ${JSON.parse(readFileSync('./node_modules/MetaCord/package.json')).version} => ${res.data.version}`);
+                    log.warn("[ MetaCord ] •", `New Version Published: ${JSON.parse(readFileSync('./node_modules/metacord/package.json')).version} => ${res.data.version}`);
                     log.warn("[ MetaCord ] •", `Perform Automatic Update to the Latest Version !`);
                     try {
                         execSync('npm install MetaCord@latest', { stdio: 'inherit' });
