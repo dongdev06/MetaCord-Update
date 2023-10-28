@@ -8,6 +8,7 @@ var stream = require("stream");
 var log = require("npmlog");
 var querystring = require("querystring");
 var url = require("url");
+var { getKeyValue } = require('./utils/Database');
 
 function setProxy(url) {
     if (typeof url == undefined) return request = bluebird.promisify(require("request").defaults({ jar: true }));
@@ -1196,12 +1197,13 @@ function decodeClientPayload(payload) {
 
 function getAppState(jar) {
     var appstate = jar.getCookies("https://www.facebook.com").concat(jar.getCookies("https://facebook.com")).concat(jar.getCookies("https://www.messenger.com"));
-    if (!require(process.cwd() + "/MetaCord.json").Encrypt_Appstate) return appstate;
+    if (!require(process.cwd() + "/MetaCord_Config.json").Encrypt_Appstate) return appstate;
     var StateCrypt = require('./utils/StateCrypt');
     var logger = require('./logger');
     logger('Start Encrypt Appstate !', '[ MetaCord ]');
     if (getKeyValue("MetaCordKey")) {
-        return StateCrypt.encryptState(JSON.stringify(appstate),getKeyValue("MetaCordKey")), logger('Encrypt Appstate Success !', '[ MetaCord ]');
+        logger('Encrypt Appstate Success !', '[ MetaCord ]');
+        return StateCrypt.encryptState(JSON.stringify(appstate),getKeyValue("MetaCordKey"));
     }
    else return appstate;
 }

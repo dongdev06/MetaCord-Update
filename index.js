@@ -33,14 +33,13 @@ const defaultConfig = {
 if (!fs.existsSync(configPath)) {
     fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2));
 }
+var config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 
-global.config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-
-if (global.config.Create_Html_Site) {
-    extension.CreateSiteHtml(global.config.Port_Html_Site);
+if (config.Create_Html_Site) {
+    extension.CreateSiteHtml(config.Port_Html_Site);
 }
 
-if (global.config.Auto_Uptime) {
+if (config.Auto_Uptime) {
     const REPL_HOME = `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`.toLowerCase();
     extension.Uptime(REPL_HOME);
 }
@@ -297,7 +296,7 @@ function makeLogin(jar, email, password, loginOptions, callback, prCallback) {
         });
         // ---------- Very Hacky Part Ends -----------------
 
-        logger("Đang Đăng Nhập...", "[ MetaCord ]");
+        logger("Logging...", "[ MetaCord ]");
         return utils
             .post("https://www.facebook.com/login/device-based/regular/login/?login_attempt=1&lwv=110", jar, form, loginOptions)
             .then(utils.saveCookies(jar))
@@ -475,62 +474,6 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
     try {
         if (appState) {
 
-            const chalk = require("chalk");
-            var logger = require('./logger');
-            const figlet = require("figlet");
-            const fs = require("fs-extra");
-            const os = require("os");
-            const { execSync } = require('child_process');
-            var { readFileSync } = require('fs-extra');
-
-            const localbrand = JSON.parse(readFileSync('./package.json')).name;
-            const localbrand2 = JSON.parse(readFileSync('./node_modules/MetaCord/package.json')).version;
-            //var os = require("os");
-
-            console.clear();
-            console.log("\n");
-            console.log(`   ┌────────────MetaCord───────────────┐\n.██████╗██╗  ██╗ █████╗ ███╗   ██╗██████╗ \n.██╔════╝██║  ██║██╔══██╗████╗  ██║██╔══██╗\n.██║     ███████║███████║██╔██╗ ██║██║  ██║\n.██║     ██╔══██║██╔══██║██║╚██╗██║██║  ██║\n.╚██████╗██║  ██║██║  ██║██║ ╚████║██████╔╝ \n.╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝  \n »» <: HATERS FATHER MetaCord :> ««\n☞HATERS FEEL KERTY RHAO APUN KO GHANTA FARQ NAHI PARTA \nDO RESPECT HAVE RESPECT☜\n☞ FB.COM/CH4ND.CH4ND☜\n »» <: MetaCord:> ««\n   └────────────MetaCord───────────────┘\n`);
-            console.log(chalk.bold.hex("#ffff00")("[<") + chalk.bold.hex("#ff3300")("/") + chalk.bold.hex("#ffff00")(">]") + chalk.bold.hex('#00FFCC')(' => ') + "Operating system: " + chalk.bold.red(os.type()));
-            console.log(chalk.bold.hex("#ffff00")("[<") + chalk.bold.hex("#ff3300")("/") + chalk.bold.hex("#ffff00")(">]") + chalk.bold.hex('#00FFCC')(' => ') + "Machine Information: " + chalk.bold.red(os.version()));
-            console.log(chalk.bold.hex("#ffff00")("[<") + chalk.bold.hex("#ff3300")("/") + chalk.bold.hex("#ffff00")(">]") + chalk.bold.hex('#00FFCC')(' => ') + "CPU: " + chalk.bold.red(os.cpus()));
-            console.log(chalk.bold.hex("#ffff00")("[<") + chalk.bold.hex("#ff3300")("/") + chalk.bold.hex("#ffff00")(">]") + chalk.bold.hex('#00FFCC')(' => ') + "Arch: " + chalk.bold.red(os.arch()));
-            console.log(chalk.bold.hex("#ffff00")("[<") + chalk.bold.hex("#ff3300")("/") + chalk.bold.hex("#ffff00")(">]") + chalk.bold.hex('#00FFCC')(' => ') + "Total Capacity: " + chalk.bold.red(os.totalmem() + " Bytes"));
-            console.log(chalk.bold.hex("#ffff00")("[<") + chalk.bold.hex("#ff3300")("/") + chalk.bold.hex("#ffff00")(">]") + chalk.bold.hex('#00FFCC')(' => ') + "Available Capacity: " + chalk.bold.red(os.freemem() + " Bytes"));
-            console.log(chalk.bold.hex("#ffff00")("[<") + chalk.bold.hex("#ff3300")("/") + chalk.bold.hex("#ffff00")(">]") + chalk.bold.hex('#00FFCC')(' => ') + "Current version: " + chalk.bold.red(localbrand2));
-            console.log(chalk.hex('#9966CC')(`───────────────────────────`));
-
-
-
-            /*           var axios = require('axios');
-                         axios.get('https://raw.githubusercontent.com/vudung2008/fbchatapi-jiser/main/package.json').then(async (res) => {
-                             if (localbrand.toUpperCase() == 'HORIZON') {
-                                 console.group(chalk.bold.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'))  
-                                     console.log(chalk.bold.hex('#00FFCC')("[</>]") + chalk.bold.yellow(' => ') + "Hệ Điều Hành: " + chalk.bold.red(os.type()));
-                                     console.log(chalk.bold.hex('#00FFCC')("[</>]") + chalk.bold.yellow(' => ') + "Thông Tin Máy: " + chalk.bold.red(os.version()));
-                                     console.log(chalk.bold.hex('#00FFCC')("[</>]") + chalk.bold.yellow(' => ') + "Phiên Bản Hiện Tại: " + chalk.bold.red(localbrand2));
-                                     console.log(chalk.bold.hex('#00FFCC')("[</>]") + chalk.bold.yellow(' => ')  + "Phiên Bản Mới Nhất: " + chalk.bold.red(res.data.version));
-                                 console.groupEnd();
-                             }
-                         else {
-                             console.clear();
-                             console.log(figlet.textSync('TeamHorizon', {font: 'ANSI Shadow',horizontalLayout: 'default',verticalLayout: 'default',width: 0,whitespaceBreak: true }))
-                             console.group(chalk.bold.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'))  
-                             console.log(chalk.bold.hex('#00FFCC')("[</>]") + chalk.bold.yellow(' => ') + "Hệ Điều Hành: " + chalk.bold.red(os.type()));
-                             console.log(chalk.bold.hex('#00FFCC')("[</>]") + chalk.bold.yellow(' => ') + "Thông Tin Máy: " + chalk.bold.red(os.version()));
-                             console.log(chalk.bold.hex('#00FFCC')("[</>]") + chalk.bold.yellow(' => ') + "Phiên Bản Hiện Tại: " + chalk.bold.red(localbrand2));
-                             console.log(chalk.bold.hex('#00FFCC')("[</>]") + chalk.bold.yellow(' => ')  + "Phiên Bản Mới Nhất: " + chalk.bold.red(res.data.version));
-                                 console.groupEnd();
-                             console.log(chalk.hex('#9966CC')(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`));
-                         }
-            
-            
-                             console.log(chalk.bold.hex('#00FFCC')("[</>]") + chalk.bold.yellow(' => ')  + "Phiên Bản Mới Nhất: " + chalk.bold.red(res.data.version));
-            
-            
-            
-            
-                     });*/
-
             if (!getKeyValue("MetaCordKey")) {
                 try {
                     setKeyValue("MetaCordKey", makeid(49));
@@ -542,7 +485,7 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                 }
             }
 
-            if (global.config.Encrypt_Appstate) {
+            if (config.Encrypt_Appstate) {
                 if (getKeyValue("MetaCordKey")) {
                     try {
                         appState = JSON.stringify(appState);
@@ -556,6 +499,7 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                             }
                             catch (e) {
                                 logger('Replace AppState !', '[ MetaCord ]');
+                                console.log(e);
                             }
                         }
                     }
@@ -572,6 +516,7 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                     appState = appState;
                 }
                 catch (e) {
+                    console.log(e);
                     return logger('Replace AppState !', '[ MetaCord ]')
                 }
             }
@@ -584,6 +529,7 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                 // Load the main page.
                 mainPromise = utils.get('https://www.facebook.com/', jar, null, globalOptions, { noRef: true }).then(utils.saveCookies(jar));
             } catch (e) {
+                console.log(e);
                 return logger('Replace AppState !', '[ MetaCord ]')
             }
         } else {
@@ -639,47 +585,48 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
     mainPromise
         .then(function () {
             logger('Complete the Login Process!', "[ MetaCord ]");
-            logger('Auto Check Update ...', "[ MetaCord ]");
             //!---------- Auto Check, Update START -----------------!//
+            if (config.Auto_Update) {
+            logger('Auto Check Update ...', "[ MetaCord ]");
             var axios = require('axios');
             var { readFileSync } = require('fs-extra');
             const { execSync } = require('child_process');
-            axios.get('https://pastebin.com/raw/B6YJ7Zjx').then(async (res) => {
+                axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/package.json').then(async (res) => {
                 const localbrand = JSON.parse(readFileSync('./node_modules/metacord/package.json')).version;
                 if (localbrand != res.data.version) {
-                    log.warn("[ MetaCord ] •", `New Version Published: ${JSON.parse(readFileSync('./node_modules/metacord/package.json')).version} => ${res.data.version}`);
-                    log.warn("[ MetaCord ] •", `Perform Automatic Update to the Latest Version !`);
+                    logger(`New Version Published: ${JSON.parse(readFileSync('./node_modules/metacord/package.json')).version} => ${res.data.version}`,"[ MetaCord ]");
+                    logger(`Perform Automatic Update to the Latest Version !`, "[ MetaCord ]");
                     try {
-                        execSync('npm install MetaCord@latest', { stdio: 'inherit' });
+                        execSync('npm install shinchan0911/metacord', { stdio: 'inherit' });
                         logger("Version Upgrade Successful!", "[ MetaCord ]")
                         logger('Restarting...', '[ MetaCord ]');
                         await new Promise(resolve => setTimeout(resolve, 5 * 1000));
                         console.clear(); process.exit(1);
                     }
                     catch (err) {
-                        log.warn('Auto Update error ! ' + err);
-
-                        // <= Start Submit The Error To The Api => //
-
-                        /*try {
-                            var { data } = await axios.get(`https://bank-sv-4.duongduong216.repl.co/fcaerr?error=${encodeURI(err)}&senderID=${encodeURI(process.env['UID'] || "IDK")}&DirName=${encodeURI(__dirname)}`);
-                            if (data) {
-                                logger.onLogger('Đã Gửi Báo Cáo Lỗi Tới Server !', '[ MetaCord ]'," #FF0000")
-                            }
-                        }
-                        catch (e) {
-                            logger.onLogger('Đã Xảy Ra Lỗi Khi Cố Gửi Lỗi Đến Server', '[ MetaCord ]'," #FF0000")
-                        }*/
-
+                        logger('Auto Update error ! ' + err, "[ MetaCord ]");
                     }
                 }
                 else {
+                    axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/MetaCord_Config.json').then(async (res) => {
+                        if (res.data.Config_Version != config.Config_Version) {
+                            logger(`New Config Version Published: ${config.Config_Version} => ${res.data.Config_Version}`,"[ MetaCord ]");
+                            logger(`Perform Automatic Update Config to the Latest Version !`, "[ MetaCord ]");
+                            await fs.writeFileSync(configPath, JSON.stringify(res.data, null, 2));
+                            logger("Config Version Upgrade Successful!", "[ MetaCord ]")
+                            logger('Restarting...', '[ MetaCord ]');
+                            await new Promise(resolve => setTimeout(resolve, 5 * 1000));
+                            console.clear(); process.exit(1);
+                        }
                     logger(`You Are Currently Using Version: ` + localbrand + ' !', "[ MetaCord ]");
+                    logger(`And Config Version: ` + config.Config_Version + ' !', "[ MetaCord ]");
                     logger(`Have a good day !`)
                     await new Promise(resolve => setTimeout(resolve, 5 * 1000));
                     callback(null, api);
+                    });
                 }
             });
+        } else return callback(null, api);
         }).catch(function (e) {
             log.error("login", e.error || e);
             callback(e);
