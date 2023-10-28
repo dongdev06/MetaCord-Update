@@ -3,6 +3,7 @@ const app = express();
 const logger = require('../logger');
 const path = require('path');
 const axios = require('axios');
+const chalk = require('chalk');
 
 function Uptime(url) {
     switch (process.platform) {
