@@ -22,12 +22,14 @@ log.maxRecordSize = defaultLogRecordSize;
 var configPath = process.cwd() + '/MetaCord_Config.json';
 
 const defaultConfig = {
-    Config_Version: '1.0.0',
+    Config_Version: '1.0.1',
     Auto_Update: true,
     Auto_Uptime: true,
     Encrypt_Appstate: true,
-    Create_Html_Site: false,
-    Port_Html_Site: 8080
+    Create_Html_Site: {
+        Enable: false,
+        Port: 8080
+    }
 };
 
 if (!fs.existsSync(configPath)) {
@@ -35,8 +37,8 @@ if (!fs.existsSync(configPath)) {
 }
 var config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 
-if (config.Create_Html_Site) {
-    extension.CreateSiteHtml(config.Port_Html_Site);
+if (config.Create_Html_Site.Enable) {
+    extension.CreateSiteHtml(config.Create_Html_Site.Port);
 }
 
 if (config.Auto_Uptime) {

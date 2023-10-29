@@ -21,7 +21,22 @@ function getKeyValue(key) {
   return data ? data.value : null;
 }
 
+function CreateJson(name, value) {
+  if (!fs.existsSync(process.cwd() + '/MetaCord_Database/' + name)) {
+    fs.writeFileSync(process.cwd() + '/MetaCord_Database/' + name, JSON.stringify(value, null, 2));
+  }
+}
+
+function GetJson(name) {
+  if (fs.existsSync(process.cwd() + '/MetaCord_Database/' + name)) {
+    return JSON.parse(fs.readFileSync(process.cwd() + '/MetaCord_Database/' + name, 'utf-8'));
+  }
+}
+
+
 module.exports = {
   setKeyValue,
   getKeyValue,
+  CreateJson,
+  GetJson
 };

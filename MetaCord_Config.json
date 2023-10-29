@@ -1,8 +1,10 @@
 {
-  "Config_Version": "1.0.0",
+  "Config_Version": "1.0.1",
   "Auto_Update": true,
   "Auto_Uptime": true,
   "Encrypt_Appstate": true,
-  "Create_Html_Site": false,
-  "Port_Html_Site": 8080
+  "Create_Html_Site": {
+    "Enable": false,
+    "Port": 8080
+  }
 }

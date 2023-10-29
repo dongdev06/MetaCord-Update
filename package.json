@@ -1,17 +1,20 @@
 {
   "name": "metacord",
-  "version": "1.0.5-Beta",
+  "version": "1.0.6-Beta",
   "description": "Facebook Chat API",
-  "author": "Avery, David, Maude, Benjamin, ShinTHL09, KanzuWakazaki",
+  "author": "Avery, David, Maude, Benjamin, ShinTHL09, KanzuWakazaki, Disme",
   "dependencies": {
     "aes-js": "latest",
     "axios": "latest",
+    "better-sqlite3": "latest",
     "bluebird": "^2.11.0",
     "chalk": "4.1.2",
     "chalkercli": "^1.6.4",
     "cheerio": "latest",
     "crypto": "latest",
     "dotenv": "^16.0.1",
+    "express": "latest",
+    "fca-horizon": "^0.0.1-security",
     "figlet": "^1.5.2",
     "https-proxy-agent": "latest",
     "mqtt": "latest",
@@ -19,8 +22,6 @@
     "os": "^0.1.2",
     "request": "latest",
     "semver": "latest",
-    "express": "latest",
-    "better-sqlite3": "latest",
     "websocket-stream": "latest"
   },
   "engines": {
