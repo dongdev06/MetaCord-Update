@@ -244,7 +244,7 @@ function buildAPI(globalOptions, html, jar) {
         'httpPostFormData',
         
         //Modding MetaCord
-        'getUUID'
+        'getUID'
     ];
 
     var defaultFuncs = utils.makeDefaults(html, userID, ctx);
