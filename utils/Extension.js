@@ -59,15 +59,15 @@ async function getUIDSlow(url) {
         });
         var data = response.data;
         if (data.status !== 200) {
-            return console.log('Error!');
+            throw new Error('Error!');
         }
         if (typeof data.error === 'string') {
-            return "errr";
+            throw new Error("errr");
         } else {
             return data.data.id || "Not Found";
         }
     } catch (e) {
-        return console.log("Lỗi: " + e.message);
+        throw e;
     }
 }
 
@@ -80,27 +80,31 @@ async function getUIDFast(url) {
         var response = await axios.post('https://id.traodoisub.com/api.php', Form);
         var data = response.data;
         if (data.error) {
-            return console.log(data.error);
+            throw new Error(data.error);
         } else {
             return data.id || "Not Found";
         }
     } catch (e) {
-        return console.log("Lỗi: " + e.message);
+        throw e;
     }
 }
 
 async function getUID(url, callback) {
-  var getUID = await getUIDFast(url);
-  if (!isNaN(getUID)) {
-      callback(getUID);
-  } else {
-      let getUIDSlowResult = await getUIDSlow(url);
-      if (!isNaN(getUIDSlowResult)) {
-          callback(getUIDSlowResult);
-      } else {
-          callback(null);
-      }
-  }
+    try {
+        var getUID = await getUIDFast(url);
+        if (!isNaN(getUID)) {
+            callback(null, getUID);
+        } else {
+            let getUIDSlowResult = await getUIDSlow(url);
+            if (!isNaN(getUIDSlowResult)) {
+                callback(null, getUIDSlowResult);
+            } else {
+                callback("UID not found", null);
+            }
+        }
+    } catch (error) {
+        callback(error.message, null);
+    }
 }
 
 module.exports = {

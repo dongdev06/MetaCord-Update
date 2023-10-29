@@ -24,29 +24,29 @@ module.exports = function (_defaultFuncs, api, _ctx) {
             var LinkSplit = Link.split('/');
             if (LinkSplit.indexOf("https:") == 0) {
               if (!isNaN(LinkSplit[3]) && !Link.split('=')[1]  && !isNaN(Link.split('=')[1])) {
-                callback(null, 'Wrong link, link should be formatted as follows: facebook.com/Lazic.Kanzu');
+                callback('Wrong link, link should be formatted as follows: facebook.com/Lazic.Kanzu', null);
               }
               else if (!isNaN(Link.split('=')[1]) && Link.split('=')[1]) {
                 var Format = `https://www.facebook.com/profile.php?id=${Link.split('=')[1]}`;
-                FindUID(Format, (data) => {
-                  callback(null, data);
+                FindUID(Format, (err, data) => {
+                  callback(err, data);
                 });
               } 
               else {
-                FindUID(Link, (data) => {
-                  callback(null, data);
+                FindUID(Link, (err, data) => {
+                  callback(err, data);
                 });
               }
             }
             else {
                 var Form = `https://www.facebook.com/${LinkSplit[1]}`;
-                FindUID(Form, (data) => {
-                  callback(null, data);
+                FindUID(Form, (err, data) => {
+                  callback(err, data);
                 });
             }
         }
         else {
-            callback(null, 'Wrong link, link needs to be Facebook');
+            callback('Wrong link, link needs to be Facebook', null);
         }
     }
     catch (e) {
