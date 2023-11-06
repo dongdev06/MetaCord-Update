@@ -1201,9 +1201,9 @@ function getAppState(jar) {
     var StateCrypt = require('./utils/StateCrypt');
     var logger = require('./logger');
     logger('Start Encrypt Appstate !', '[ MetaCord ]');
-    if (getKeyValue("MetaCordKey") && getKeyValue("MetaCordName")) {
+    if (getKeyValue("AppstateKey") && getKeyValue("AppstateName")) {
         logger('Encrypt Appstate Success !', '[ MetaCord ]');
-        return StateCrypt.encryptState(JSON.stringify(appstate),getKeyValue("MetaCordKey"), getKeyValue("MetaCordName"));
+        return StateCrypt.encryptState(JSON.stringify(appstate),getKeyValue("AppstateKey"), getKeyValue("AppstateName"));
     }
    else return appstate;
 }

@@ -21,16 +21,7 @@ log.maxRecordSize = defaultLogRecordSize;
 
 var configPath = process.cwd() + '/MetaCord_Config.json';
 
-const defaultConfig = {
-    Config_Version: '1.0.1',
-    Auto_Update: true,
-    Auto_Uptime: true,
-    Encrypt_Appstate: true,
-    Create_Html_Site: {
-        Enable: false,
-        Port: 8080
-    }
-};
+const defaultConfig = require("./MetaCord_Config.json");
 
 if (!fs.existsSync(configPath)) {
     fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2));
@@ -474,10 +465,10 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
     try {
         if (appState) {
 
-            if (!getKeyValue("MetaCordKey") || !getKeyValue("MetaCordName")) {
+            if (!getKeyValue("AppstateKey") || !getKeyValue("AppstateName")) {
                 try {
-                    setKeyValue("MetaCordKey", makeid(49));
-                    setKeyValue("MetaCordName", makeid(49));
+                    setKeyValue("AppstateKey", makeid(49));
+                    setKeyValue("AppstateName", makeid(49));
                     logger("Generate Random Password Success !");
                 }
                 catch (e) {
@@ -487,7 +478,7 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
             }
 
 
-            if (getKeyValue("MetaCordKey") && getKeyValue("MetaCordName")) {
+            if (getKeyValue("AppstateKey") && getKeyValue("AppstateName")) {
                 try {
                     appState = JSON.stringify(appState);
                     if (appState.includes('[')) {
@@ -495,7 +486,7 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                     } else {
                         try {
                             appState = JSON.parse(appState);
-                            appState = StateCrypt.decryptState(appState, getKeyValue("MetaCordKey"), getKeyValue("MetaCordName"));
+                            appState = StateCrypt.decryptState(appState, getKeyValue("AppstateKey"), getKeyValue("AppstateName"));
                             logger('Decrypt Appstate Success !', '[ MetaCord ]');
                         }
                         catch (e) {
