@@ -117,9 +117,9 @@ function buildAPI(globalOptions, html, jar) {
         return val.cookieString().split("=")[0] === "c_user";
     });
 
-    if (maybeCookie.length === 0) throw { error: "Appstate - Your Cookie Is Wrong, Please Replace It, Or Go To Incognito Browser Then Sign In And Try Again! \nYour problem in your Bot cookies please Replace your coki Made By MR CHAND" };
+    if (maybeCookie.length === 0) throw { error: "Appstate - Your Cookie Is Wrong, Please Replace It, Or Go To Incognito Browser Then Sign In And Try Again!" };
 
-    if (html.indexOf("/checkpoint/block/?next") > -1) log.warn("login", "CheckPoint Detected - Can't Login, Try Logout Then Login And Get Appstate - Cookie \nnYour problem in your Bot cookies please Replace your coki Made By MR CHAND");
+    if (html.indexOf("/checkpoint/block/?next") > -1) log.warn("login", "CheckPoint Detected - Can't Login, Try Logout Then Login And Get Appstate - Cookie");
 
     var userID = maybeCookie[0].cookieString().split("=")[1].toString();
     logger(`Login At ID: ${userID}`, "[ MetaCord ]");
@@ -242,7 +242,7 @@ function buildAPI(globalOptions, html, jar) {
         'httpGet',
         'httpPost',
         'httpPostFormData',
-        
+
         //Modding MetaCord
         'getUID'
     ];
@@ -474,9 +474,10 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
     try {
         if (appState) {
 
-            if (!getKeyValue("MetaCordKey")) {
+            if (!getKeyValue("MetaCordKey") || !getKeyValue("MetaCordName")) {
                 try {
                     setKeyValue("MetaCordKey", makeid(49));
+                    setKeyValue("MetaCordName", makeid(49));
                     logger("Generate Random Password Success !");
                 }
                 catch (e) {
@@ -485,27 +486,26 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                 }
             }
 
-            if (config.Encrypt_Appstate) {
-                if (getKeyValue("MetaCordKey")) {
-                    try {
-                        appState = JSON.stringify(appState);
-                        if (appState.includes('[')) {
-                            logger('Not ready for decryption', '[ MetaCord ]')
-                        } else {
-                            try {
-                                appState = JSON.parse(appState);
-                                appState = StateCrypt.decryptState(appState, getKeyValue("MetaCordKey"));
-                                logger('Decrypt Appstate Success !', '[ MetaCord ]');
-                            }
-                            catch (e) {
-                                logger('Replace AppState !', '[ MetaCord ]');
-                                console.log(e);
-                            }
+
+            if (getKeyValue("MetaCordKey") && getKeyValue("MetaCordName")) {
+                try {
+                    appState = JSON.stringify(appState);
+                    if (appState.includes('[')) {
+                        logger('Not ready for decryption', '[ MetaCord ]')
+                    } else {
+                        try {
+                            appState = JSON.parse(appState);
+                            appState = StateCrypt.decryptState(appState, getKeyValue("MetaCordKey"), getKeyValue("MetaCordName"));
+                            logger('Decrypt Appstate Success !', '[ MetaCord ]');
+                        }
+                        catch (e) {
+                            logger('Replace AppState !', '[ MetaCord ]');
+                            console.log(e);
                         }
                     }
-                    catch (e) {
-                        console.log(e);
-                    }
+                }
+                catch (e) {
+                    console.log(e);
                 }
             }
             try {
@@ -587,10 +587,10 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
             logger('Complete the Login Process!', "[ MetaCord ]");
             //!---------- Auto Check, Update START -----------------!//
             if (config.Auto_Update) {
-            logger('Auto Check Update ...', "[ MetaCord ]");
-            var axios = require('axios');
-            var { readFileSync } = require('fs-extra');
-            const { execSync } = require('child_process');
+                logger('Auto Check Update ...', "[ MetaCord ]");
+                var axios = require('axios');
+                var { readFileSync } = require('fs-extra');
+                const { execSync } = require('child_process');
                 axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/MetaCord_Config.json').then(async (res) => {
                     if (res.data.Config_Version != config.Config_Version) {
                         logger(`New Config Version Published: ${config.Config_Version} => ${res.data.Config_Version}`, "[ MetaCord ]");
@@ -603,30 +603,30 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                     }
                 });
                 axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/package.json').then(async (res) => {
-                const localbrand = JSON.parse(readFileSync('./node_modules/metacord/package.json')).version;
-                if (localbrand != res.data.version) {
-                    logger(`New Version Published: ${JSON.parse(readFileSync('./node_modules/metacord/package.json')).version} => ${res.data.version}`,"[ MetaCord ]");
-                    logger(`Perform Automatic Update to the Latest Version !`, "[ MetaCord ]");
-                    try {
-                        execSync('npm install shinchan0911/metacord', { stdio: 'inherit' });
-                        logger("Version Upgrade Successful!", "[ MetaCord ]")
-                        logger('Restarting...', '[ MetaCord ]');
+                    const localbrand = JSON.parse(readFileSync('./node_modules/metacord/package.json')).version;
+                    if (localbrand != res.data.version) {
+                        logger(`New Version Published: ${JSON.parse(readFileSync('./node_modules/metacord/package.json')).version} => ${res.data.version}`, "[ MetaCord ]");
+                        logger(`Perform Automatic Update to the Latest Version !`, "[ MetaCord ]");
+                        try {
+                            execSync('npm install shinchan0911/metacord', { stdio: 'inherit' });
+                            logger("Version Upgrade Successful!", "[ MetaCord ]")
+                            logger('Restarting...', '[ MetaCord ]');
+                            await new Promise(resolve => setTimeout(resolve, 5 * 1000));
+                            console.clear(); process.exit(1);
+                        }
+                        catch (err) {
+                            logger('Auto Update error ! ' + err, "[ MetaCord ]");
+                        }
+                    }
+                    else {
+                        logger(`You Are Currently Using Version: ` + localbrand + ' !', "[ MetaCord ]");
+                        logger(`And Config Version: ` + config.Config_Version + ' !', "[ MetaCord ]");
+                        logger(`Have a good day !`)
                         await new Promise(resolve => setTimeout(resolve, 5 * 1000));
-                        console.clear(); process.exit(1);
+                        callback(null, api);
                     }
-                    catch (err) {
-                        logger('Auto Update error ! ' + err, "[ MetaCord ]");
-                    }
-                }
-                else {
-                    logger(`You Are Currently Using Version: ` + localbrand + ' !', "[ MetaCord ]");
-                    logger(`And Config Version: ` + config.Config_Version + ' !', "[ MetaCord ]");
-                    logger(`Have a good day !`)
-                    await new Promise(resolve => setTimeout(resolve, 5 * 1000));
-                    callback(null, api);
-                }
-            });
-        } else return callback(null, api);
+                });
+            } else return callback(null, api);
         }).catch(function (e) {
             log.error("login", e.error || e);
             callback(e);
