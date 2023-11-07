@@ -120,13 +120,18 @@ function StartCountOnlineTime() {
 }
 
 function GetCountOnlineTime() {
-    let second = Number(fs.readFileSync('./Online.js', 'utf8'));
-    const day = Math.floor(second / (3600 * 24));
-    second %= 3600 * 24;
-    const hour = Math.floor(second / 3600);
-    second %= 3600;
-    const minute = Math.floor(second / 60);
-    return { day, hour, minute };
+    const s = Number(fs.readFileSync('./Online.js', 'utf8'));
+    const n = Math.floor(s / 86400);
+    const t = Math.floor(s % 86400 / 3600);
+    const r = Math.floor(s / 60 % 60);
+    const a = Math.floor(s % 60);
+
+    const formattedTime = [n, t, r, a]
+        .map(e => (e < 10 ? "0" + e : e))
+        .filter((e, o) => "00" !== e || o > 0)
+        .join(": ");
+
+    return formattedTime;
 }
 
 module.exports = {
