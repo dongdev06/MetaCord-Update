@@ -116,7 +116,7 @@ function StartCountOnlineTime() {
         const data = Number(fs.readFileSync('./Online.js', 'utf8'));
         const time = data + 1;
         fs.writeFileSync("./Online.js", JSON.stringify(time, null, 2));
-    }, 1000);
+    }, 1);
 }
 
 function GetCountOnlineTime() {
