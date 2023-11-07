@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 "use strict";
 
-module.exports = function (_defaultFuncs, api, _ctx) {
+module.exports = function (_defaultFuncs, _ctx) {
     return function getUID(link, callback) {
       var resolveFunc = function () { };
       var rejectFunc = function () { };
