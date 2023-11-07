@@ -618,10 +618,6 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                     else {
                         logger(`You Are Currently Using Version: ` + localbrand + ' !', "[ MetaCord ]");
                         logger(`And Config Version: ` + config.Config_Version + ' !', "[ MetaCord ]");
-                        if (config.Count_Online_Time) {
-                            const { day, hour, minute } = extension.GetCountOnlineTime();
-                            logger(`Your Bot is now running: ${day} day | ${hour} hour | ${minute} minute`)
-                        } 
                         logger(`Have a good day !`);
                         await new Promise(resolve => setTimeout(resolve, 5 * 1000));
                         callback(null, api);
