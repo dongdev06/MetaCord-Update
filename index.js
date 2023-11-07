@@ -37,6 +37,10 @@ if (config.Auto_Uptime) {
     extension.Uptime(REPL_HOME);
 }
 
+if (config.Count_Online_Time) {
+    extension.StartCountOnlineTime();
+}
+
 function setOptions(globalOptions, options) {
     Object.keys(options).map(function (key) {
         switch (key) {
@@ -235,7 +239,8 @@ function buildAPI(globalOptions, html, jar) {
         'httpPostFormData',
 
         //Modding MetaCord
-        'getUID'
+        'getUID',
+        'getOnlineTime'
     ];
 
     var defaultFuncs = utils.makeDefaults(html, userID, ctx);
@@ -613,7 +618,11 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                     else {
                         logger(`You Are Currently Using Version: ` + localbrand + ' !', "[ MetaCord ]");
                         logger(`And Config Version: ` + config.Config_Version + ' !', "[ MetaCord ]");
-                        logger(`Have a good day !`)
+                        if (config.Count_Online_Time) {
+                            const { day, hour, minute } = extension.GetCountOnlineTime();
+                            logger(`Your Bot is now running: ${day} day | ${hour} hour | ${minute} minute`)
+                        } 
+                        logger(`Have a good day !`);
                         await new Promise(resolve => setTimeout(resolve, 5 * 1000));
                         callback(null, api);
                     }

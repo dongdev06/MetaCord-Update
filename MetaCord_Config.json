@@ -6,5 +6,6 @@
   "Create_Html_Site": {
     "Enable": false,
     "Port": 8080
-  }
+  },
+  "Count_Online_Time": true
 }

@@ -4,6 +4,7 @@ const logger = require('../logger');
 const path = require('path');
 const axios = require('axios');
 const chalk = require('chalk');
+const fs = require('fs');
 
 function Uptime(url) {
     switch (process.platform) {
@@ -107,8 +108,31 @@ async function getUID(url, callback) {
     }
 }
 
+function StartCountOnlineTime() {
+    if (!fs.existsSync("./Online.js")) {
+        fs.writeFileSync("./Online.js", JSON.stringify(0, null, 2));
+    }
+    setInterval(function () {
+        const data = Number(fs.readFileSync('./Online.js', 'utf8'));
+        const time = data + 1;
+        fs.writeFileSync("./Online.js", JSON.stringify(time, null, 2));
+    }, 1000);
+}
+
+function GetCountOnlineTime() {
+    const second = Number(fs.readFileSync('./Online.js', 'utf8'));
+    const day = Math.floor(second / (3600 * 24));
+    second %= 3600 * 24;
+    const hour = Math.floor(second / 3600);
+    second %= 3600;
+    const minute = Math.floor(second / 60);
+    return { day, hour, minute };
+}
+
 module.exports = {
     CreateSiteHtml,
     Uptime,
-    getUID
+    getUID,
+    StartCountOnlineTime,
+    GetCountOnlineTime
 };
