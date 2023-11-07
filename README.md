@@ -2,7 +2,7 @@ This repo is a fork from main repo and will usually have new features bundled fa
 
 # MetaCord Facebook Chat API
 <a href="https://www.npmjs.com/package/metacord"><img alt="npm version" src="https://img.shields.io/npm/v/metacord.svg?style=flat-square"></a>
-<img alt="version" src="https://img.shields.io/github/package-json/v/metacord/metacord?label=github&style=flat-square">
+<img alt="version" src="https://img.shields.io/github/package-json/v/shinchan0911/metacord?label=github&style=flat-square">
 <a href="https://www.npmjs.com/package/metacord"><img src="https://img.shields.io/npm/dm/metacord.svg?style=flat-square" alt="npm downloads"></a>
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
