@@ -6,6 +6,7 @@ var mqtt = require('mqtt');
 var websocket = require('websocket-stream');
 var HttpsProxyAgent = require('https-proxy-agent');
 const EventEmitter = require('events');
+const logger = require('../logger');
 
 
 var identity = function () { };
