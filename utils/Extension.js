@@ -109,29 +109,24 @@ async function getUID(url, callback) {
 }
 
 function StartCountOnlineTime() {
-    if (!fs.existsSync("./Online.js")) {
-        fs.writeFileSync("./Online.js", JSON.stringify(0, null, 2));
+    if (!fs.existsSync(__dirname + "/Online.js")) {
+        fs.writeFileSync(__dirname + "/Online.js", JSON.stringify(0, null, 2));
     }
     setInterval(function () {
-        const data = Number(fs.readFileSync('./Online.js', 'utf8'));
+        const data = Number(fs.readFileSync(__dirname + '/Online.js', 'utf8'));
         const time = data + 1;
-        fs.writeFileSync("./Online.js", JSON.stringify(time, null, 2));
-    }, 1);
+        fs.writeFileSync(__dirname + "/Online.js", JSON.stringify(time, null, 2));
+    }, 1000);
 }
 
 function GetCountOnlineTime() {
-    const s = Number(fs.readFileSync('./Online.js', 'utf8'));
-    const n = Math.floor(s / 86400);
-    const t = Math.floor(s % 86400 / 3600);
-    const r = Math.floor(s / 60 % 60);
-    const a = Math.floor(s % 60);
-
-    const formattedTime = [n, t, r, a]
-        .map(e => (e < 10 ? "0" + e : e))
-        .filter((e, o) => "00" !== e || o > 0)
-        .join(": ");
-
-    return formattedTime;
+    let second = Number(fs.readFileSync(__dirname + '/Online.js', 'utf8'));
+    const day = Math.floor(second / (3600 * 24));
+    second %= 3600 * 24;
+    const hour = Math.floor(second / 3600);
+    second %= 3600;
+    const minute = Math.floor(second / 60);
+    return { day, hour, minute };
 }
 
 module.exports = {
