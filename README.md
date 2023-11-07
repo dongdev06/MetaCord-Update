@@ -1,9 +1,9 @@
 This repo is a fork from main repo and will usually have new features bundled faster than main repo (and maybe bundle some bugs, too).
 
 # MetaCord Facebook Chat API
-<a href="https://www.npmjs.com/package/fca-unofficial"><img alt="npm version" src="https://img.shields.io/npm/v/fca-unofficial.svg?style=flat-square"></a>
-<img alt="version" src="https://img.shields.io/github/package-json/v/fca-unofficial/fca-unofficial?label=github&style=flat-square">
-<a href="https://www.npmjs.com/package/fca-unofficial"><img src="https://img.shields.io/npm/dm/fca-unofficial.svg?style=flat-square" alt="npm downloads"></a>
+<a href="https://www.npmjs.com/package/metacord"><img alt="npm version" src="https://img.shields.io/npm/v/metacord.svg?style=flat-square"></a>
+<img alt="version" src="https://img.shields.io/github/package-json/v/metacord/metacord?label=github&style=flat-square">
+<a href="https://www.npmjs.com/package/metacord"><img src="https://img.shields.io/npm/dm/metacord.svg?style=flat-square" alt="npm downloads"></a>
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 Facebook now has an official API for chat bots [here](https://developers.facebook.com/docs/messenger-platform).

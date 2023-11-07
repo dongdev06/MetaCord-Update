@@ -1,43 +1,53 @@
 const crypto = require('crypto');
 const aes = require("aes-js");
 
-function encryptState(data, key, name) {
-    const salt = crypto.randomBytes(16);
-    const hashEngine = crypto.createHash("sha256");
-    const hashKey = hashEngine.update(key + salt.toString('hex')).digest();
-    const iv = crypto.randomBytes(16);
+function encryptState(data, key1, key2, key3) {
+  //Step 1
+  let hashEngine1 = crypto.createHash("sha256");
+  let hashKey1 = hashEngine1.update(key1).digest();
+  let bytes1 = aes.utils.utf8.toBytes(data);
+  let aesCtr1 = new aes.ModeOfOperation.ctr(hashKey1);
+  let encryptedData1 = aesCtr1.encrypt(bytes1);
 
-    const jsonData = JSON.stringify(data);
-    const bytes = aes.utils.utf8.toBytes(jsonData);
+  //Step 2
+  let hashEngine2 = crypto.createHash("sha256");
+  let hashKey2 = hashEngine2.update(key2).digest();
+  let aesCtr2 = new aes.ModeOfOperation.ctr(hashKey2);
+  let encryptedData2 = aesCtr2.encrypt(encryptedData1);
 
-    const aesCtr = new aes.ModeOfOperation.ctr(hashKey, new aes.Counter(5), iv);
-    const encryptedData = aesCtr.encrypt(bytes);
-    const result = salt.toString('hex') + iv.toString('hex') + aes.utils.hex.fromBytes(encryptedData);
-    
-    const encryptedAppState = {};
-    encryptedAppState[name] = result;
+  //Step 3
+  let hashEngine3 = crypto.createHash("sha256");
+  let hashKey3 = hashEngine3.update(key3).digest();
+  let aesCtr3 = new aes.ModeOfOperation.ctr(hashKey3);
+  let encryptedData3 = aesCtr3.encrypt(encryptedData2);
 
-    return JSON.stringify(encryptedAppState); 
+  return aes.utils.hex.fromBytes(encryptedData3).padStart(32, '0');
 }
 
-function decryptState(data, key, name) {
-    const jsonData = JSON.parse(data);
-    const appstateData = jsonData[name];
+function decryptState(data, key1, key2, key3) {
+  //Step 1
+  let hashEngine3 = crypto.createHash("sha256");
+  let hashKey3 = hashEngine3.update(key3).digest();
+  let encryptedBytes3 = aes.utils.hex.toBytes(data);
+  let aesCtr3 = new aes.ModeOfOperation.ctr(hashKey3);
+  let decryptedData3 = aesCtr3.decrypt(encryptedBytes3);
 
-    const salt = Buffer.from(appstateData.slice(0, 32), 'hex');
-    const iv = Buffer.from(appstateData.slice(32, 64), 'hex');
-    const encryptedData = aes.utils.hex.toBytes(appstateData.slice(64));
-    const hashEngine = crypto.createHash("sha256");
-    const hashKey = hashEngine.update(key + salt.toString('hex')).digest();
+  //Step 2
+  let hashEngine2 = crypto.createHash("sha256");
+  let hashKey2 = hashEngine2.update(key2).digest();
+  let aesCtr2 = new aes.ModeOfOperation.ctr(hashKey2);
+  let decryptedData2 = aesCtr2.decrypt(decryptedData3);
 
-    const aesCtr = new aes.ModeOfOperation.ctr(hashKey, new aes.Counter(5), iv);
-    const decryptedData = aesCtr.decrypt(encryptedData);
-    const jsonDataString = aes.utils.utf8.fromBytes(decryptedData);
+  //Step 3
+  let hashEngine1 = crypto.createHash("sha256");
+  let hashKey1 = hashEngine1.update(key1).digest();
+  let aesCtr1 = new aes.ModeOfOperation.ctr(hashKey1);
+  let decryptedData1 = aesCtr1.decrypt(decryptedData2);
 
-    return JSON.parse(jsonDataString);
+  return aes.utils.utf8.fromBytes(decryptedData1);
 }
 
 module.exports = {
-    encryptState: encryptState,
-    decryptState: decryptState
-};
+  encryptState: encryptState,
+  decryptState: decryptState
+}

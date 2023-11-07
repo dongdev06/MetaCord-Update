@@ -465,10 +465,11 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
     try {
         if (appState) {
 
-            if (!getKeyValue("AppstateKey") || !getKeyValue("AppstateName")) {
+            if (!getKeyValue("AppstateKey1") || !getKeyValue("AppstateKey2") || !getKeyValue("AppstateKey2")) {
                 try {
-                    setKeyValue("AppstateKey", makeid(49));
-                    setKeyValue("AppstateName", makeid(49));
+                    setKeyValue("AppstateKey1", makeid(50));
+                    setKeyValue("AppstateKey2", makeid(50));
+                    setKeyValue("AppstateKey3", makeid(50));
                     logger("Generate Random Password Success !");
                 }
                 catch (e) {
@@ -478,7 +479,7 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
             }
 
 
-            if (getKeyValue("AppstateKey") && getKeyValue("AppstateName")) {
+            if (getKeyValue("AppstateKey1") || getKeyValue("AppstateKey2") || getKeyValue("AppstateKey2")) {
                 try {
                     appState = JSON.stringify(appState);
                     if (appState.includes('[')) {
@@ -486,7 +487,7 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                     } else {
                         try {
                             appState = JSON.parse(appState);
-                            appState = StateCrypt.decryptState(appState, getKeyValue("AppstateKey"), getKeyValue("AppstateName"));
+                            appState = StateCrypt.decryptState(appState, getKeyValue("AppstateKey1"), getKeyValue("AppstateKey2"), getKeyValue("AppstateKey3"));
                             logger('Decrypt Appstate Success !', '[ MetaCord ]');
                         }
                         catch (e) {
