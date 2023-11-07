@@ -120,7 +120,7 @@ function StartCountOnlineTime() {
 }
 
 function GetCountOnlineTime() {
-    const second = Number(fs.readFileSync('./Online.js', 'utf8'));
+    let second = Number(fs.readFileSync('./Online.js', 'utf8'));
     const day = Math.floor(second / (3600 * 24));
     second %= 3600 * 24;
     const hour = Math.floor(second / 3600);
