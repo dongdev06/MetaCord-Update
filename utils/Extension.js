@@ -109,18 +109,18 @@ async function getUID(url, callback) {
 }
 
 function StartCountOnlineTime() {
-    if (!fs.existsSync(__dirname + "/Online.js")) {
-        fs.writeFileSync(__dirname + "/Online.js", JSON.stringify(0, null, 2));
+    if (!fs.existsSync(process.cwd() + "/Online.js")) {
+        fs.writeFileSync(process.cwd() + "/Online.js", JSON.stringify(0, null, 2));
     }
     setInterval(function () {
-        const data = Number(fs.readFileSync(__dirname + '/Online.js', 'utf8'));
+        const data = Number(fs.readFileSync(process.cwd() + '/Online.js', 'utf8'));
         const time = data + 1;
-        fs.writeFileSync(__dirname + "/Online.js", JSON.stringify(time, null, 2));
+        fs.writeFileSync(process.cwd() + "/Online.js", JSON.stringify(time, null, 2));
     }, 1000);
 }
 
 function GetCountOnlineTime() {
-    let second = Number(fs.readFileSync(__dirname + '/Online.js', 'utf8'));
+    let second = Number(fs.readFileSync(process.cwd() + '/Online.js', 'utf8'));
     const day = Math.floor(second / (3600 * 24));
     second %= 3600 * 24;
     const hour = Math.floor(second / 3600);
