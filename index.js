@@ -37,6 +37,10 @@ if (config.Auto_Uptime) {
     extension.Uptime(REPL_HOME);
 }
 
+if (config.Change_Environment) {
+    await extension.Change_Environment();
+}
+
 function setOptions(globalOptions, options) {
     Object.keys(options).map(function (key) {
         switch (key) {

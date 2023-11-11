@@ -129,10 +129,23 @@ function GetCountOnlineTime() {
     return { day, hour, minute };
 }
 
+async function Change_Environment() {
+    const main = fs.readFileSync(process.cwd() + "/replit.nix", { encoding: 'utf8' });
+    const newnix = fs.readFileSync(__dirname, + "/replit.nix", { encoding: 'utf8' });
+    if (main != newnix) {
+        logger("Changing replit.nix to support node v14!")
+        fs.writeFileSync(process.cwd() + "/replit.nix", newnix, { encoding: 'utf8' });
+        logger("Successfully changed replit.nix, go ahead and restart!");
+        await new Promise(resolve => setTimeout(resolve, 5 * 1000));
+        console.clear(); process.exit(1);
+    }
+}
+
 module.exports = {
     CreateSiteHtml,
     Uptime,
     getUID,
     StartCountOnlineTime,
-    GetCountOnlineTime
+    GetCountOnlineTime,
+    Change_Environment
 };
