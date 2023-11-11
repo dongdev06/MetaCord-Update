@@ -37,10 +37,6 @@ if (config.Auto_Uptime) {
     extension.Uptime(REPL_HOME);
 }
 
-if (config.Count_Online_Time) {
-    extension.StartCountOnlineTime();
-}
-
 function setOptions(globalOptions, options) {
     Object.keys(options).map(function (key) {
         switch (key) {

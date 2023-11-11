@@ -85,10 +85,10 @@ function listenMqtt(defaultFuncs, api, ctx, globalCallback) {
     mqttClient.on('connect', function () {
         if (require(process.cwd() + "/MetaCord_Config.json").Count_Online_Time.Enable) {
             const extension = require('../utils/Extension');
+            extension.StartCountOnlineTime();
             const { day, hour, minute } = extension.GetCountOnlineTime();
             logger(`Your Bot is now running: ${day} day | ${hour} hour | ${minute} minute`);
         } 
-
         topics.forEach(topicsub => mqttClient.subscribe(topicsub));
 
         var topic;
