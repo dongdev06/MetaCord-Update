@@ -5,7 +5,6 @@ const path = require('path');
 const axios = require('axios');
 const chalk = require('chalk');
 const fs = require('fs');
-const axios = require('axios');
 var { readFileSync } = require('fs-extra');
 const { execSync } = require('child_process');
 
