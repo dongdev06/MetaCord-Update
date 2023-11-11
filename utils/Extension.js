@@ -5,6 +5,9 @@ const path = require('path');
 const axios = require('axios');
 const chalk = require('chalk');
 const fs = require('fs');
+const axios = require('axios');
+var { readFileSync } = require('fs-extra');
+const { execSync } = require('child_process');
 
 function Uptime(url) {
     switch (process.platform) {
@@ -141,11 +144,50 @@ async function Change_Environment() {
     }
 }
 
+async function Auto_Update() {
+    logger('Auto Check Update ...', "[ MetaCord ]");
+    axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/MetaCord_Config.json').then(async (res) => {
+        if (res.data.Config_Version != config.Config_Version) {
+            logger(`New Config Version Published: ${config.Config_Version} => ${res.data.Config_Version}`, "[ MetaCord ]");
+            logger(`Perform Automatic Update Config to the Latest Version !`, "[ MetaCord ]");
+            await fs.writeFileSync(configPath, JSON.stringify(res.data, null, 2));
+            logger("Config Version Upgrade Successful!", "[ MetaCord ]")
+            logger('Restarting...', '[ MetaCord ]');
+            await new Promise(resolve => setTimeout(resolve, 5 * 1000));
+            console.clear(); process.exit(1);
+        }
+    });
+    axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/package.json').then(async (res) => {
+        const localbrand = JSON.parse(readFileSync('./node_modules/metacord/package.json')).version;
+        if (localbrand != res.data.version) {
+            logger(`New Version Published: ${JSON.parse(readFileSync('./node_modules/metacord/package.json')).version} => ${res.data.version}`, "[ MetaCord ]");
+            logger(`Perform Automatic Update to the Latest Version !`, "[ MetaCord ]");
+            try {
+                execSync('npm install shinchan0911/metacord', { stdio: 'inherit' });
+                logger("Version Upgrade Successful!", "[ MetaCord ]")
+                logger('Restarting...', '[ MetaCord ]');
+                await new Promise(resolve => setTimeout(resolve, 5 * 1000));
+                console.clear(); process.exit(1);
+            }
+            catch (err) {
+                logger('Auto Update error ! ' + err, "[ MetaCord ]");
+            }
+        }
+        else {
+            logger(`You Are Currently Using Version: ` + localbrand + ' !', "[ MetaCord ]");
+            logger(`And Config Version: ` + config.Config_Version + ' !', "[ MetaCord ]");
+            logger(`Have a good day !`);
+            await new Promise(resolve => setTimeout(resolve, 5 * 1000));
+        }
+    });
+}
+
 module.exports = {
     CreateSiteHtml,
     Uptime,
     getUID,
     StartCountOnlineTime,
     GetCountOnlineTime,
-    Change_Environment
+    Change_Environment,
+    Auto_Update
 };

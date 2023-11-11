@@ -28,17 +28,24 @@ if (!fs.existsSync(configPath)) {
 }
 var config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 
-if (config.Create_Html_Site.Enable) {
-    extension.CreateSiteHtml(config.Create_Html_Site.Port);
-}
 
-if (config.Auto_Uptime) {
-    const REPL_HOME = `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`.toLowerCase();
-    extension.Uptime(REPL_HOME);
-}
+async () => {
+    if (config.Create_Html_Site.Enable) {
+        extension.CreateSiteHtml(config.Create_Html_Site.Port);
+    }
 
-if (config.Change_Environment) {
-    await extension.Change_Environment();
+    if (config.Auto_Uptime) {
+        const REPL_HOME = `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`.toLowerCase();
+        extension.Uptime(REPL_HOME);
+    }
+
+    if (config.Change_Environment) {
+        await extension.Change_Environment();
+    }
+
+    if (config.Auto_Update) {
+        await extension.Auto_Update();
+    }
 }
 
 function setOptions(globalOptions, options) {
@@ -582,53 +589,11 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
     mainPromise
         .then(function () {
             logger('Complete the Login Process!', "[ MetaCord ]");
-            //!---------- Auto Check, Update START -----------------!//
-            if (config.Auto_Update) {
-                logger('Auto Check Update ...', "[ MetaCord ]");
-                var axios = require('axios');
-                var { readFileSync } = require('fs-extra');
-                const { execSync } = require('child_process');
-                axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/MetaCord_Config.json').then(async (res) => {
-                    if (res.data.Config_Version != config.Config_Version) {
-                        logger(`New Config Version Published: ${config.Config_Version} => ${res.data.Config_Version}`, "[ MetaCord ]");
-                        logger(`Perform Automatic Update Config to the Latest Version !`, "[ MetaCord ]");
-                        await fs.writeFileSync(configPath, JSON.stringify(res.data, null, 2));
-                        logger("Config Version Upgrade Successful!", "[ MetaCord ]")
-                        logger('Restarting...', '[ MetaCord ]');
-                        await new Promise(resolve => setTimeout(resolve, 5 * 1000));
-                        console.clear(); process.exit(1);
-                    }
-                });
-                axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/package.json').then(async (res) => {
-                    const localbrand = JSON.parse(readFileSync('./node_modules/metacord/package.json')).version;
-                    if (localbrand != res.data.version) {
-                        logger(`New Version Published: ${JSON.parse(readFileSync('./node_modules/metacord/package.json')).version} => ${res.data.version}`, "[ MetaCord ]");
-                        logger(`Perform Automatic Update to the Latest Version !`, "[ MetaCord ]");
-                        try {
-                            execSync('npm install shinchan0911/metacord', { stdio: 'inherit' });
-                            logger("Version Upgrade Successful!", "[ MetaCord ]")
-                            logger('Restarting...', '[ MetaCord ]');
-                            await new Promise(resolve => setTimeout(resolve, 5 * 1000));
-                            console.clear(); process.exit(1);
-                        }
-                        catch (err) {
-                            logger('Auto Update error ! ' + err, "[ MetaCord ]");
-                        }
-                    }
-                    else {
-                        logger(`You Are Currently Using Version: ` + localbrand + ' !', "[ MetaCord ]");
-                        logger(`And Config Version: ` + config.Config_Version + ' !', "[ MetaCord ]");
-                        logger(`Have a good day !`);
-                        await new Promise(resolve => setTimeout(resolve, 5 * 1000));
-                        callback(null, api);
-                    }
-                });
-            } else return callback(null, api);
+            return callback(null, api);
         }).catch(function (e) {
             log.error("login", e.error || e);
             callback(e);
         });
-    //!---------- Auto Check, Update END -----------------!//
 }
 
 function login(loginData, options, callback) {
