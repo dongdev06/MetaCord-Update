@@ -8,7 +8,7 @@ const fs = require('fs');
 var { readFileSync } = require('fs-extra');
 const { execSync } = require('child_process');
 
-function Uptime() {
+function Auto_Uptime() {
     switch (process.platform) {
         case 'win32':
         case 'darwin':
@@ -184,7 +184,7 @@ async function Auto_Update() {
 
 module.exports = {
     CreateSiteHtml,
-    Uptime,
+    Auto_Uptime,
     getUID,
     StartCountOnlineTime,
     GetCountOnlineTime,
