@@ -35,8 +35,7 @@ async () => {
     }
 
     if (config.Auto_Uptime) {
-        const REPL_HOME = `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`.toLowerCase();
-        extension.Uptime(REPL_HOME);
+        extension.Uptime();
     }
 
     if (config.Change_Environment) {
