@@ -35,7 +35,7 @@ async () => {
     }
 
     if (config.Auto_Uptime) {
-        extension.Uptime();
+        extension.Auto_Uptime();
     }
 
     if (config.Change_Environment) {
