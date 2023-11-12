@@ -8,7 +8,7 @@ const fs = require('fs');
 var { readFileSync } = require('fs-extra');
 const { execSync } = require('child_process');
 
-function Uptime(url) {
+function Uptime() {
     switch (process.platform) {
         case 'win32':
         case 'darwin':
@@ -16,6 +16,7 @@ function Uptime(url) {
             break;
         case 'linux':
             if (process.env.REPL_SLUG) {
+                const url = `https://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`.toLowerCase();
                 logger(`Activating uptime for ${chalk.underline(`'${url}'`)}`);
                 return setInterval(function () {
                     axios.get(url).then(() => { }).catch(() => { });
