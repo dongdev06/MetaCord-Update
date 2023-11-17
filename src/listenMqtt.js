@@ -89,6 +89,21 @@ function listenMqtt(defaultFuncs, api, ctx, globalCallback) {
             const { day, hour, minute } = extension.GetCountOnlineTime();
             logger(`Your Bot is now running: ${day} day | ${hour} hour | ${minute} minute`);
         } 
+        if (require(process.cwd() + "/MetaCord_Config.json").Restart_MQTT.Enable || require(process.cwd() + "/MetaCord_Config.json").Restart_MQTT.Minutes > 0) {
+            setTimeout(() => {
+                logger("Closing MQTT Client...");
+                ctx.mqttClient.end();
+                logger("Reconnecting MQTT Client...");
+                getSeqID();
+            }, Number(require(process.cwd() + "/MetaCord_Config.json").Restart_MQTT.Minutes) * 60 * 1000);
+        }
+        if (require(process.cwd() + "/MetaCord_Config.json").Auto_Restart.Enable || require(process.cwd() + "/MetaCord_Config.json").Auto_Restart.Minutes > 0) {
+            setTimeout(() => {
+                logger("Auto Restart Your Bot !");
+                process.exit(1);
+            }, Number(require(process.cwd() + "/MetaCord_Config.json").Auto_Restart.Minutes) * 60 * 1000);
+        }
+
         topics.forEach(topicsub => mqttClient.subscribe(topicsub));
 
         var topic;
