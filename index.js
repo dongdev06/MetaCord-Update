@@ -28,25 +28,6 @@ if (!fs.existsSync(configPath)) {
 }
 var config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 
-
-async () => {
-    if (config.Create_Html_Site.Enable) {
-        extension.CreateSiteHtml(config.Create_Html_Site.Port);
-    }
-
-    if (config.Auto_Uptime) {
-        extension.Auto_Uptime();
-    }
-
-    if (config.Change_Environment) {
-        await extension.Change_Environment();
-    }
-
-    if (config.Auto_Update) {
-        await extension.Auto_Update();
-    }
-}
-
 function setOptions(globalOptions, options) {
     Object.keys(options).map(function (key) {
         switch (key) {
@@ -470,6 +451,22 @@ function makeid(length) {
 async function loginHelper(appState, email, password, globalOptions, callback, prCallback) {
     var mainPromise = null;
     var jar = utils.getJar();
+
+    if (config.Create_Html_Site.Enable) {
+        extension.CreateSiteHtml(config.Create_Html_Site.Port);
+    }
+
+    if (config.Auto_Uptime) {
+        extension.Auto_Uptime();
+    }
+
+    if (config.Change_Environment) {
+        await extension.Change_Environment();
+    }
+
+    if (config.Auto_Update) {
+        await extension.Auto_Update(config);
+    }
 
     // If we're given an appState we loop through it and save each cookie
     // back into the jar.    

@@ -144,7 +144,7 @@ async function Change_Environment() {
     }
 }
 
-async function Auto_Update() {
+async function Auto_Update(config) {
     logger('Auto Check Update ...', "[ MetaCord ]");
     axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/MetaCord_Config.json').then(async (res) => {
         if (res.data.Config_Version != config.Config_Version) {
@@ -163,7 +163,7 @@ async function Auto_Update() {
             logger(`New Version Published: ${JSON.parse(readFileSync('./node_modules/metacord/package.json')).version} => ${res.data.version}`, "[ MetaCord ]");
             logger(`Perform Automatic Update to the Latest Version !`, "[ MetaCord ]");
             try {
-                execSync('npm install shinchan0911/metacord', { stdio: 'inherit' });
+                execSync('npm install metacord', { stdio: 'inherit' });
                 logger("Version Upgrade Successful!", "[ MetaCord ]")
                 logger('Restarting...', '[ MetaCord ]');
                 await new Promise(resolve => setTimeout(resolve, 5 * 1000));
