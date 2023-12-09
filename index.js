@@ -10,6 +10,7 @@ var log = require("npmlog");
 var logger = require('./logger');
 var fs = require('fs');
 var StateCrypt = require('./utils/StateCrypt');
+var { prompt } = require('./utils/ReadLine');
 
 var extension = require('./utils/Extension');
 var { getKeyValue, setKeyValue } = require('./utils/Database');
@@ -27,6 +28,8 @@ if (!fs.existsSync(configPath)) {
     fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2));
 }
 var config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+
+
 
 function setOptions(globalOptions, options) {
     Object.keys(options).map(function (key) {
@@ -94,12 +97,29 @@ function setOptions(globalOptions, options) {
     });
 }
 
-function buildAPI(globalOptions, html, jar) {
+async function buildAPI(globalOptions, html, jar) {
     var maybeCookie = jar.getCookies("https://www.facebook.com").filter(function (val) {
         return val.cookieString().split("=")[0] === "c_user";
     });
 
-    if (maybeCookie.length === 0) throw { error: "Appstate - Your Cookie Is Wrong, Please Replace It, Or Go To Incognito Browser Then Sign In And Try Again!" };
+    if (maybeCookie.length === 0) {
+        if (config.Auto_Login) {
+            log.warn("login", "The account has been logged out, proceed to automatically log back");
+            if (getKeyValue('Email') || getKeyValue('Password')) {
+                const email = getKeyValue('Email');
+                const password = getKeyValue('Password');
+
+                await extension.Auto_Login(email, password);
+            } else {
+                logger("Please enter the email and password");
+                process.exit(1);
+            }
+
+            
+        } else {
+            throw { error: "Appstate - Your Cookie Is Wrong, Please Replace It, Or Go To Incognito Browser Then Sign In And Try Again!" }
+        }
+    }
 
     if (html.indexOf("/checkpoint/block/?next") > -1) log.warn("login", "CheckPoint Detected - Can't Login, Try Logout Then Login And Get Appstate - Cookie");
 
@@ -468,6 +488,18 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
         await extension.Auto_Update(config);
     }
 
+    if (config.Auto_Login) {
+        if (!getKeyValue("Email") || !getKeyValue("Password")) {
+            const email = await prompt('Enter your email: ');
+            const password = await prompt('Enter your password: ');
+
+            setKeyValue('Email', email);
+            setKeyValue('Password', password);
+
+            logger('Email and Password saved successfully!');
+        }
+    }
+
     // If we're given an appState we loop through it and save each cookie
     // back into the jar.    
     try {
@@ -508,6 +540,7 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
                     console.log(e);
                 }
             }
+
             try {
                 appState = JSON.parse(appState);
             }

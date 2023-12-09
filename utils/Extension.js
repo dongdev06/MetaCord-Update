@@ -182,6 +182,15 @@ async function Auto_Update(config) {
     });
 }
 
+async function Auto_Login(Email, PassWord) {
+    require('../index')({ email: Email, password: PassWord},async (error, api) => {
+        if (error) {
+            logger(JSON.stringify(error,null,2), function() { logger("Auto Login Failed!", function() { process.exit(0); }) });
+        }
+        process.exit(1);
+    });
+}
+
 module.exports = {
     CreateSiteHtml,
     Auto_Uptime,
@@ -189,5 +198,6 @@ module.exports = {
     StartCountOnlineTime,
     GetCountOnlineTime,
     Change_Environment,
-    Auto_Update
+    Auto_Update,
+    Auto_Login
 };
