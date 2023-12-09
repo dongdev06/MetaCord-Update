@@ -16,6 +16,9 @@ See [below](#projects-using-this-api) for projects using this API.
 
 See the [full changelog](/CHANGELOG.md) for release details.
 
+## Warning
+This project is only available for bots that use listenMqtt
+
 ## Install
 If you just want to use metacord, you should use this command:
 ```bash
