@@ -97,7 +97,7 @@ function setOptions(globalOptions, options) {
     });
 }
 
-async function buildAPI(globalOptions, html, jar) {
+function buildAPI(globalOptions, html, jar) {
     var maybeCookie = jar.getCookies("https://www.facebook.com").filter(function (val) {
         return val.cookieString().split("=")[0] === "c_user";
     });
@@ -109,13 +109,11 @@ async function buildAPI(globalOptions, html, jar) {
                 const email = getKeyValue('Email');
                 const password = getKeyValue('Password');
 
-                await extension.Auto_Login(email, password);
+                return extension.Auto_Login(email, password);
             } else {
                 logger("Please enter the email and password");
                 process.exit(1);
             }
-
-            
         } else {
             throw { error: "Appstate - Your Cookie Is Wrong, Please Replace It, Or Go To Incognito Browser Then Sign In And Try Again!" }
         }

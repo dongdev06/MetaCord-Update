@@ -112,18 +112,18 @@ async function getUID(url, callback) {
 }
 
 function StartCountOnlineTime() {
-    if (!fs.existsSync(process.cwd() + "/Online.js")) {
-        fs.writeFileSync(process.cwd() + "/Online.js", JSON.stringify(0, null, 2));
+    if (!fs.existsSync(process.cwd() + "/Online.json")) {
+        fs.writeFileSync(process.cwd() + "/Online.json", JSON.stringify(0, null, 2));
     }
     setInterval(function () {
-        const data = Number(fs.readFileSync(process.cwd() + '/Online.js', 'utf8'));
+        const data = Number(fs.readFileSync(process.cwd() + '/Online.json', 'utf8'));
         const time = data + 1;
-        fs.writeFileSync(process.cwd() + "/Online.js", JSON.stringify(time, null, 2));
+        fs.writeFileSync(process.cwd() + "/Online.json", JSON.stringify(time, null, 2));
     }, 1000);
 }
 
 function GetCountOnlineTime() {
-    let second = Number(fs.readFileSync(process.cwd() + '/Online.js', 'utf8'));
+    let second = Number(fs.readFileSync(dprocess.cwd() + '/Online.json', 'utf8'));
     const day = Math.floor(second / (3600 * 24));
     second %= 3600 * 24;
     const hour = Math.floor(second / 3600);
@@ -182,12 +182,14 @@ async function Auto_Update(config) {
     });
 }
 
-async function Auto_Login(Email, PassWord) {
+async function Auto_Login(Email, PassWord, Callback) {
     require('../index')({ email: Email, password: PassWord},async (error, api) => {
         if (error) {
-            logger(JSON.stringify(error,null,2), function() { logger("Auto Login Failed!", function() { process.exit(0); }) });
+            console.log(Email, " ", PassWord);
+            return logger("Auto Login Failed!"), process.exit(1);
+        } else {
+            return console.log("Auto Login Successful!") ,process.exit(1);
         }
-        process.exit(1);
     });
 }
 

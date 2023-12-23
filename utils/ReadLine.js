@@ -12,4 +12,4 @@ function prompt(question) {
     }));
 }
 
-module.exports = prompt;
+module.exports = { prompt };
