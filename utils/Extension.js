@@ -7,6 +7,7 @@ const chalk = require('chalk');
 const fs = require('fs');
 var { readFileSync } = require('fs-extra');
 const { execSync } = require('child_process');
+const { setKeyValue } = require('./Database');
 
 function Auto_Uptime() {
     switch (process.platform) {
@@ -177,14 +178,16 @@ async function Auto_Update(config) {
             logger(`You Are Currently Using Version: ` + localbrand + ' !', "[ MetaCord ]");
             logger(`And Config Version: ` + config.Config_Version + ' !', "[ MetaCord ]");
             logger(`Have a good day !`);
-            await new Promise(resolve => setTimeout(resolve, 5 * 1000));
         }
     });
 }
 
-async function Auto_Login(Email, PassWord, Callback) {
+async function Auto_Login(Email, PassWord) {
     require('../index')({ email: Email, password: PassWord},async (error, api) => {
         if (error) {
+            setKeyValue("Email", null);
+            setKeyValue("Password", null);
+            
             return logger("Auto Login Failed!"), process.exit(1);
         } else {
             return console.log("Auto Login Successful!") ,process.exit(1);
