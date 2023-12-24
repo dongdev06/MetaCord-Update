@@ -152,7 +152,8 @@ async function Auto_Update(config) {
             await fs.writeFileSync(configPath, JSON.stringify(res.data, null, 2));
             logger("Config Version Upgrade Successful!", "[ MetaCord ]")
             logger('Restarting...', '[ MetaCord ]');
-            return console.clear(), process.exit(1);
+            await new Promise(resolve => setTimeout(resolve, 5 * 1000));
+            console.clear(), process.exit(1);
         }
     });
     axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/package.json').then(async (res) => {
@@ -161,10 +162,12 @@ async function Auto_Update(config) {
             logger(`New Version Published: ${JSON.parse(readFileSync('./node_modules/metacord/package.json')).version} => ${res.data.version}`, "[ MetaCord ]");
             logger(`Perform Automatic Update to the Latest Version !`, "[ MetaCord ]");
             try {
+                fs.rmdirSync((process.cwd() + "/node_modules/metacord" || __dirname + '../../../metacord'), { recursive: true });
                 execSync('npm install metacord@latest', { stdio: 'inherit' });
                 logger("Version Upgrade Successful!", "[ MetaCord ]")
                 logger('Restarting...', '[ MetaCord ]');
-                return console.clear(), process.exit(1);
+                await new Promise(resolve => setTimeout(resolve, 5 * 1000));
+                console.clear(), process.exit(1);
             }
             catch (err) {
                 logger('Auto Update error ! ' + err, "[ MetaCord ]");
@@ -174,6 +177,7 @@ async function Auto_Update(config) {
             logger(`You Are Currently Using Version: ` + localbrand + ' !', "[ MetaCord ]");
             logger(`And Config Version: ` + config.Config_Version + ' !', "[ MetaCord ]");
             logger(`Have a good day !`);
+            await new Promise(resolve => setTimeout(resolve, 5 * 1000));
         }
     });
 }
