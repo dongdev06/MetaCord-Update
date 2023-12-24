@@ -13,7 +13,7 @@ var identity = function () { };
 var form = {};
 var getSeqID = function () { };
 
-var topics = ["/legacy_web","/webrtc","/rtc_multi","/onevc","/br_sr","/sr_res","/t_ms","/thread_typing","/orca_typing_notifications","/notify_disconnect","/orca_presence","/inbox","/mercury", "/messaging_events", "/orca_message_notifications", "/pp","/webrtc_response"];
+var topics = ["/legacy_web", "/webrtc", "/rtc_multi", "/onevc", "/br_sr", "/sr_res", "/t_ms", "/thread_typing", "/orca_typing_notifications", "/notify_disconnect", "/orca_presence", "/inbox", "/mercury", "/messaging_events", "/orca_message_notifications", "/pp", "/webrtc_response"];
 
 /* [ Noti ? ]
 !   "/br_sr", //Notification
@@ -33,7 +33,7 @@ function listenMqtt(defaultFuncs, api, ctx, globalCallback) {
     var foreground = false;
 
     var sessionID = Math.floor(Math.random() * 9007199254740991) + 1;
-    var username = {u: ctx.userID,s: sessionID,chat_on: chatOn,fg: foreground,d: utils.getGUID(),ct: "websocket",aid: "219994525426954", mqtt_sid: "",cp: 3,ecp: 10,st: [],pm: [],dc: "",no_auto_fg: true,gas: null,pack: []};
+    var username = { u: ctx.userID, s: sessionID, chat_on: chatOn, fg: foreground, d: utils.getGUID(), ct: "websocket", aid: "219994525426954", mqtt_sid: "", cp: 3, ecp: 10, st: [], pm: [], dc: "", no_auto_fg: true, gas: null, pack: [] };
     var cookies = ctx.jar.getCookies("https://www.facebook.com").join("; ");
 
     var host;
@@ -83,25 +83,28 @@ function listenMqtt(defaultFuncs, api, ctx, globalCallback) {
 
 
     mqttClient.on('connect', function () {
-        if (require(process.cwd() + "/MetaCord_Config.json").Count_Online_Time.Enable) {
-            const extension = require('../utils/Extension');
-            extension.StartCountOnlineTime();
-            const { day, hour, minute } = extension.GetCountOnlineTime();
-            logger(`Your Bot is now running: ${day} day | ${hour} hour | ${minute} minute`);
-        } 
-        if (require(process.cwd() + "/MetaCord_Config.json").Restart_MQTT.Enable || require(process.cwd() + "/MetaCord_Config.json").Restart_MQTT.Minutes > 0) {
-            setTimeout(() => {
-                logger("Closing MQTT Client...");
-                ctx.mqttClient.end();
-                logger("Reconnecting MQTT Client...");
-                getSeqID();
-            }, Number(require(process.cwd() + "/MetaCord_Config.json").Restart_MQTT.Minutes) * 60 * 1000);
-        }
-        if (require(process.cwd() + "/MetaCord_Config.json").Auto_Restart.Enable || require(process.cwd() + "/MetaCord_Config.json").Auto_Restart.Minutes > 0) {
-            setTimeout(() => {
-                logger("Auto Restart Your Bot !");
-                process.exit(1);
-            }, Number(require(process.cwd() + "/MetaCord_Config.json").Auto_Restart.Minutes) * 60 * 1000);
+        if (process.env.OnStatus == undefined) {
+            if (require(process.cwd() + "/MetaCord_Config.json").Count_Online_Time.Enable) {
+                const extension = require('../utils/Extension');
+                extension.StartCountOnlineTime();
+                const { day, hour, minute } = extension.GetCountOnlineTime();
+                logger(`Your Bot is now running: ${day} day | ${hour} hour | ${minute} minute`);
+            }
+            if (require(process.cwd() + "/MetaCord_Config.json").Restart_MQTT.Enable || require(process.cwd() + "/MetaCord_Config.json").Restart_MQTT.Minutes > 0) {
+                setTimeout(() => {
+                    logger("Closing MQTT Client...");
+                    ctx.mqttClient.end();
+                    logger("Reconnecting MQTT Client...");
+                    getSeqID();
+                }, Number(require(process.cwd() + "/MetaCord_Config.json").Restart_MQTT.Minutes) * 60 * 1000);
+            }
+            if (require(process.cwd() + "/MetaCord_Config.json").Auto_Restart.Enable || require(process.cwd() + "/MetaCord_Config.json").Auto_Restart.Minutes > 0) {
+                setTimeout(() => {
+                    logger("Auto Restart Your Bot !");
+                    process.exit(1);
+                }, Number(require(process.cwd() + "/MetaCord_Config.json").Auto_Restart.Minutes) * 60 * 1000);
+            }
+            process.env.OnStatus = true;
         }
 
         topics.forEach(topicsub => mqttClient.subscribe(topicsub));
@@ -127,9 +130,9 @@ function listenMqtt(defaultFuncs, api, ctx, globalCallback) {
 
         mqttClient.publish(topic, JSON.stringify(queue), { qos: 1, retain: false });
 
-   // set status online
-    // fix by NTKhang
-    mqttClient.publish("/foreground_state", JSON.stringify({"foreground": chatOn}), {qos: 1});
+        // set status online
+        // fix by NTKhang
+        mqttClient.publish("/foreground_state", JSON.stringify({ "foreground": chatOn }), { qos: 1 });
 
         var rTimeout = setTimeout(function () {
             mqttClient.end();
@@ -138,13 +141,13 @@ function listenMqtt(defaultFuncs, api, ctx, globalCallback) {
 
         ctx.tmsWait = function () {
             clearTimeout(rTimeout);
-            ctx.globalOptions.emitReady ? globalCallback({type: "ready",error: null}) : '';
+            ctx.globalOptions.emitReady ? globalCallback({ type: "ready", error: null }) : '';
             delete ctx.tmsWait;
         };
     });
 
     mqttClient.on('message', function (topic, message, _packet) {
-            const jsonMessage = JSON.parse(message.toString());
+        const jsonMessage = JSON.parse(message.toString());
         if (topic === "/t_ms") {
             if (ctx.tmsWait && typeof ctx.tmsWait == "function") ctx.tmsWait();
 
