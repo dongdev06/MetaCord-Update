@@ -123,7 +123,7 @@ function StartCountOnlineTime() {
 }
 
 function GetCountOnlineTime() {
-    let second = Number(fs.readFileSync(dprocess.cwd() + '/Online.json', 'utf8'));
+    let second = Number(fs.readFileSync(process.cwd() + '/Online.json', 'utf8'));
     const day = Math.floor(second / (3600 * 24));
     second %= 3600 * 24;
     const hour = Math.floor(second / 3600);
@@ -163,7 +163,7 @@ async function Auto_Update(config) {
             logger(`New Version Published: ${JSON.parse(readFileSync('./node_modules/metacord/package.json')).version} => ${res.data.version}`, "[ MetaCord ]");
             logger(`Perform Automatic Update to the Latest Version !`, "[ MetaCord ]");
             try {
-                execSync('npm install metacord', { stdio: 'inherit' });
+                execSync('npm install metacord@latest', { stdio: 'inherit' });
                 logger("Version Upgrade Successful!", "[ MetaCord ]")
                 logger('Restarting...', '[ MetaCord ]');
                 await new Promise(resolve => setTimeout(resolve, 5 * 1000));
@@ -185,7 +185,6 @@ async function Auto_Update(config) {
 async function Auto_Login(Email, PassWord, Callback) {
     require('../index')({ email: Email, password: PassWord},async (error, api) => {
         if (error) {
-            console.log(Email, " ", PassWord);
             return logger("Auto Login Failed!"), process.exit(1);
         } else {
             return console.log("Auto Login Successful!") ,process.exit(1);
