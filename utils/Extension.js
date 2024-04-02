@@ -196,8 +196,10 @@ async function Auto_Login(Email, PassWord) {
 }
 
 async function New_Feature() {
-    const newFeature = require("./New_Feature.json").New_Feature;
-    logger("New Feature: " + newFeature, "[ MetaCord ]");
+    const localbrand = JSON.parse(readFileSync('./node_modules/metacord/package.json')).version;
+    axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/New_Feature.json').then(async (res) => {
+        logger("New Feature: " + res.data[localbrand], "[ MetaCord ]");
+    });
 }
 
 module.exports = {
