@@ -15,7 +15,7 @@ module.exports = function (defaultFuncs, api, ctx) {
 			callback = function (err, data) {
 				if (err) return rejectFunc(err);
 				resolveFunc(data);
-	data		};
+			};
 		}
 		let count_req = 0
 		var form = JSON.stringify({
