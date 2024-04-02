@@ -110,7 +110,7 @@ function listenMqtt(defaultFuncs, api, ctx, globalCallback) {
   mqttClient.on('connect', async function() {
     if (process.env.OnStatus == undefined) {
       if (require(process.cwd() + "/MetaCord_Config.json").New_Feature) {
-        await extension.New_Feature();
+        extension.New_Feature();
       }
       if (require(process.cwd() + "/MetaCord_Config.json").Count_Online_Time.Enable) {
         extension.StartCountOnlineTime();
