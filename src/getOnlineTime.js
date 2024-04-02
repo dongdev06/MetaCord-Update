@@ -2,7 +2,7 @@
 "use strict";
 
 module.exports = function (_defaultFuncs, _ctx) {
-    return function getUID(callback) {
+    return function getOnlineTime(callback) {
         var resolveFunc = function () { };
         var rejectFunc = function () { };
         var returnPromise = new Promise(function (resolve, reject) {
