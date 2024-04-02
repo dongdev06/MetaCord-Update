@@ -151,7 +151,7 @@ async function Auto_Update(config) {
             logger(`New Config Version Published: ${config.Config_Version} => ${res.data.Config_Version}`, "[ MetaCord ]");
             logger(`Perform Automatic Update Config to the Latest Version !`, "[ MetaCord ]");
             await fs.writeFileSync(configPath, JSON.stringify(res.data, null, 2));
-            logger("Config Version Upgrade Successful!", "[ MetaCord ]")
+            logger("Config Version Upgrade Successful!", "[ MetaCord ]");
             logger('Restarting...', '[ MetaCord ]');
             await new Promise(resolve => setTimeout(resolve, 5 * 1000));
             console.clear(), process.exit(1);
@@ -165,7 +165,7 @@ async function Auto_Update(config) {
             try {
                 fs.rmdirSync((process.cwd() + "/node_modules/metacord" || __dirname + '../../../metacord'), { recursive: true });
                 execSync('npm install metacord@latest', { stdio: 'inherit' });
-                logger("Version Upgrade Successful!", "[ MetaCord ]")
+                logger("Version Upgrade Successful!", "[ MetaCord ]");
                 logger('Restarting...', '[ MetaCord ]');
                 await new Promise(resolve => setTimeout(resolve, 5 * 1000));
                 console.clear(), process.exit(1);
@@ -195,6 +195,14 @@ async function Auto_Login(Email, PassWord) {
     });
 }
 
+async function New_Feature() {
+    const localbrand = JSON.parse(readFileSync('./node_modules/metacord/package.json')).version;
+    axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/New_Feature.json').then(async (res) => {
+        logger("New Feature: " + res.data[localbrand], "[ MetaCord ]");
+    });
+     
+}
+
 module.exports = {
     CreateSiteHtml,
     Auto_Uptime,
@@ -203,5 +211,6 @@ module.exports = {
     GetCountOnlineTime,
     Change_Environment,
     Auto_Update,
-    Auto_Login
+    Auto_Login,
+    New_Feature
 };
