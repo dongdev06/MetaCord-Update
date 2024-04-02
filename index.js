@@ -245,7 +245,8 @@ function buildAPI(globalOptions, html, jar) {
 
         //Modding MetaCord
         'getUID',
-        'getOnlineTime'
+        'getOnlineTime',
+        'shareContact'
     ];
 
     var defaultFuncs = utils.makeDefaults(html, userID, ctx);
