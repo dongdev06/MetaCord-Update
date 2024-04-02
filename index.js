@@ -246,7 +246,9 @@ function buildAPI(globalOptions, html, jar) {
         //Modding MetaCord
         'getUID',
         'getOnlineTime',
-        'shareContact'
+        'shareContact',
+        'uploadAttachment',
+        'editMessage'
     ];
 
     var defaultFuncs = utils.makeDefaults(html, userID, ctx);

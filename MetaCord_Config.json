@@ -1,6 +1,5 @@
 {
-  "Config_Version": "1.1.2",
-  "New_Feature": true,
+  "Config_Version": "1.1.1",
   "Auto_Update": true,
   "Auto_Uptime": true,
   "Auto_Login": false,

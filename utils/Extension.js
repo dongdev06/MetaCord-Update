@@ -195,13 +195,6 @@ async function Auto_Login(Email, PassWord) {
     });
 }
 
-async function New_Feature() {
-    const localbrand = JSON.parse(readFileSync('./node_modules/metacord/package.json')).version;
-    axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/New_Feature.json').then(async (res) => {
-        logger("New Feature: " + res.data[localbrand], "[ MetaCord ]");
-    });
-}
-
 module.exports = {
     CreateSiteHtml,
     Auto_Uptime,
@@ -210,6 +203,5 @@ module.exports = {
     GetCountOnlineTime,
     Change_Environment,
     Auto_Update,
-    Auto_Login,
-    New_Feature
+    Auto_Login
 };

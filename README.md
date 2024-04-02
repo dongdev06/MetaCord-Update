@@ -16,6 +16,16 @@ See [below](#projects-using-this-api) for projects using this API.
 
 See the [full changelog](/CHANGELOG.md) for release details.
 
+## New Feature
+```
+getUID
+getOnlineTime
+shareContact
+uploadAttachment
+editMessage
+
+```
+
 ## Warning
 This project is only available for bots that use listenMqtt
 

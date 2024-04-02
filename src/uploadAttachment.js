@@ -1,4 +1,3 @@
-Nguyễn Lâm
 const utils = require("../utils");
 const log = require("npmlog");
 
