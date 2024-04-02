@@ -483,7 +483,7 @@ async function loginHelper(appState, email, password, globalOptions, callback, p
     }
 
     if (config.Auto_Update) {
-        await extension.Auto_Update(config);
+        await extension.Auto_Update(config, configPath);
     }
 
     if (config.Auto_Login) {

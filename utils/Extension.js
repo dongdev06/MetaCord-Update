@@ -144,7 +144,7 @@ async function Change_Environment() {
     }
 }
 
-async function Auto_Update(config) {
+async function Auto_Update(config, configPath) {
     logger('Auto Check Update ...', "[ MetaCord ]");
     axios.get('https://raw.githubusercontent.com/Shinchan0911/MetaCord/main/MetaCord_Config.json').then(async (res) => {
         if (res.data.Config_Version != config.Config_Version) {
