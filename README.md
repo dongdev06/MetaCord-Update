@@ -23,7 +23,6 @@ getOnlineTime
 shareContact
 uploadAttachment
 editMessage
-
 ```
 
 ## Warning
