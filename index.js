@@ -252,6 +252,9 @@ function buildAPI(globalOptions, html, jar) {
     ];
 
     var defaultFuncs = utils.makeDefaults(html, userID, ctx);
+      api.postFormData = function(url, body) {
+        return defaultFuncs.postFormData(url, ctx.jar, body);
+      };
 
     // Load all api functions in a loop
     apiFuncNames.map(v => api[v] = require('./src/' + v)(defaultFuncs, api, ctx));
@@ -310,7 +313,7 @@ function makeLogin(jar, email, password, loginOptions, callback, prCallback) {
 
                 // This means the account has login approvals turned on.
                 if (headers.location.indexOf('https://www.facebook.com/checkpoint/') > -1) {
-                    logger("You Are On 2 Security !", "[ MetaCord ]");
+                    logger("Bạn đang ở chế độ bảo mật 2 lớp!", "[ MetaCord ]");
                     var nextURL = 'https://www.facebook.com/checkpoint/?next=https%3A%2F%2Fwww.facebook.com%2Fhome.php';
 
                     return utils
